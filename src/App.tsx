@@ -1,26 +1,17 @@
 import React from 'react';
-import logo from './logo.svg';
+import Card from './components/Card'; // Adjust the path as necessary
 import './App.css';
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1 className="text-2xl font-bold">Card Game</h1>
+      <Card value="5" suit="H" /> {/* 5 of Hearts */}
+      <Card value="K" suit="S" /> {/* King of Spades */}
+      <Card value="T" suit="D" /> {/* 10 of Diamonds */}
+      <Card value="A" suit="C" /> {/* Ace of Clubs */}
     </div>
   );
-}
+};
 
 export default App;
