@@ -11,7 +11,7 @@ const Card = ({ value, suit }: CardProps) => {
 
   return (
     <div className="card">
-      <img src={cardImage} alt={`${value} of ${suit}`} className="w-28 h-auto" /> {/* Adjust width using Tailwind classes */}
+      <img src={cardImage} alt={`${value} of ${suit}`} className="w-28 h-auto" /> 
     </div>
   );
 };
