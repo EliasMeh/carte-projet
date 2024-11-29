@@ -6,6 +6,8 @@ interface CardProps {
   suit: 'S' | 'D' | 'H' | 'C';
 }
 
+//images importées de https://www.freecodecamp.org/news/how-to-shuffle-an-array-of-items-using-javascript-or-typescript/
+
 const Card = ({ value, suit }: CardProps) => {
   const cardImage = `/poker-qr/${value}${suit}.svg`;
 

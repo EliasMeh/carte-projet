@@ -65,7 +65,7 @@ const App = () => {
   const [hand1, setHand1] = useState<string[]>([]);
   const [hand2, setHand2] = useState<string[]>([]);
   const [turn, setTurn] = useState(0);
-  const [usedCards, setUsedCards] = useState<string[]>([]); // Tableau local pour les cartes utilisées
+  const [usedCards, setUsedCards] = useState<string[]>([]);
   const [inBattle, setInBattle] = useState(false);
   const [battleCards, setBattleCards] = useState<string[]>([]);
 
@@ -105,7 +105,7 @@ const App = () => {
       const cardValue = getCardValue(cardToPlay);
   
       setHand(prev => prev.slice(1));
-      
+  
       if (!state.currentCard || cardValue > getCardValue(state.currentCard)) {
         dispatch({ type: 'update', payload: cardToPlay });
         if (inBattle) {
@@ -118,11 +118,25 @@ const App = () => {
         }
       } else if (cardValue === getCardValue(state.currentCard)) {
         setInBattle(true);
+        
         setBattleCards(prev => [...prev, cardToPlay, ...usedCards]);
+        
+        if (hand1.length > 0) {
+          const burnedCard1 = hand1[0];
+          setHand1(prev => prev.slice(1));
+          setBattleCards(prev => [...prev, burnedCard1]);
+        }
+        if (hand2.length > 0) {
+          const burnedCard2 = hand2[0];
+          setHand2(prev => prev.slice(1));
+          setBattleCards(prev => [...prev, burnedCard2]);
+        }
+        
         setUsedCards([]);
       } else {
+        const winner = player === 1 ? 2 : 1;
+        transferCards(winner, [...battleCards, cardToPlay, ...usedCards]);
         dispatch({ type: 'reset' });
-        transferCards(player === 1 ? 2 : 1, [...battleCards, cardToPlay, ...usedCards]);
         setBattleCards([]);
         setUsedCards([]);
         setInBattle(false);
@@ -132,45 +146,52 @@ const App = () => {
     }
   };
 
-  console.log(hand1, hand2);
-  console.log(usedCards);
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-    <div className="text-center">
-      <h1 className="text-2xl font-bold mb-4">Card Game</h1>
-      
-      {inBattle && (
-        <div className="mb-4">
-          <p className="text-xl font-bold">Bataille en cours!</p>
-          <p>Cartes en jeu: {battleCards.length}</p>
-        </div>
-      )}
-      
-      <p className="text-xl mb-4">
-        Valeur actuelle: {state.currentCard || 'Aucune'}
-      </p>
-      {state.error && <p className="text-red-500 mb-4">{state.error}</p>}
+  
+return (
+  <div className="min-h-screen flex items-center justify-center bg-cover bg-center relative" style={{backgroundImage: `url(${process.env.PUBLIC_URL}/bg.jpg)`}}>
+    <div className="absolute inset-0 bg-black opacity-50"></div>
+      <div className="text-center relative z-10 text-white">
+        <h1 className="text-2xl font-bold mb-4">Card Game</h1>
+        
+        {inBattle && (
+          <div className="mb-4">
+            <p className="text-xl font-bold">Bataille en cours!</p>
+            <p>Cartes en jeu: {battleCards.length}</p>
+          </div>
+        )}
+        
+        <p className="text-xl mb-4">
+          Valeur actuelle: {state.currentCard || 'Aucune'}
+        </p>
+        
+        {state.error && <p className="text-red-500 mb-4">{state.error}</p>}
+        
         <div className="mb-8">
           <h2 className="text-lg font-semibold mb-2">Joueur 1</h2>
           <p className="mb-2">Nombre de cartes restantes: {hand1.length}</p>
-          {hand2.length > 0 && (
-          <div className="flex justify-center mb-2">
-            <Card
-              value={hand1[0][0] as 'A' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | 'T' | 'J' | 'Q' | 'K'}
-              suit={hand1[0][1] as 'S' | 'D' | 'H' | 'C'}
-            />
-          </div>
+          
+          {hand1.length > 0 && (
+            <div className="flex justify-center mb-2">
+              <Card
+                value={hand1[0][0] as 'A' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | 'T' | 'J' | 'Q' | 'K'}
+                suit={hand1[0][1] as 'S' | 'D' | 'H' | 'C'}
+              />
+            </div>
           )}
+          
           <button 
             onClick={() => playCard(1)} 
             disabled={turn % 2 !== 0}
-            className="bg-blue-500 text-white px-4 py-2 rounded disabled:opacity-50">
+            className="bg-blue-500 text-white px-4 py-2 rounded disabled:opacity-50"
+          >
             Jouer carte Joueur 1
           </button>
         </div>
+        
         <div>
           <h2 className="text-lg font-semibold mb-2">Joueur 2</h2>
           <p className="mb-2">Nombre de cartes restantes: {hand2.length}</p>
+          
           {hand2.length > 0 && (
             <div className="flex justify-center mb-2">
               <Card
@@ -179,16 +200,18 @@ const App = () => {
               />
             </div>
           )}
+          
           <button 
             onClick={() => playCard(2)} 
             disabled={turn % 2 === 0}
-            className="bg-blue-500 text-white px-4 py-2 rounded disabled:opacity-50">
+            className="bg-blue-500 text-white px-4 py-2 rounded disabled:opacity-50"
+          >
             Jouer carte Joueur 2
           </button>
         </div>
       </div>
     </div>
-  );
+);
 };
 
 export default App;
