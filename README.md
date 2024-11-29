@@ -8,4 +8,9 @@ React
 Tailwind
 TypeScript
 
-Pour lancer l'application : npm start
+Pour lancer l'application : 
+npm install
+
+npm install -D tailwindcss postcss autoprefixer
+
+npm start
