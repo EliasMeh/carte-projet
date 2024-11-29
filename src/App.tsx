@@ -147,9 +147,9 @@ const App = () => {
   };
 
   
-return (
-  <div className="min-h-screen flex items-center justify-center bg-cover bg-center relative" style={{backgroundImage: `url(${process.env.PUBLIC_URL}/bg.jpg)`}}>
-    <div className="absolute inset-0 bg-black opacity-50"></div>
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-cover bg-center relative" style={{backgroundImage: `url(${process.env.PUBLIC_URL}/bg.jpg)`}}>
+      <div className="absolute inset-0 bg-black opacity-50"></div>
       <div className="text-center relative z-10 text-white">
         <h1 className="text-2xl font-bold mb-4">Card Game</h1>
         
@@ -170,14 +170,16 @@ return (
           <h2 className="text-lg font-semibold mb-2">Joueur 1</h2>
           <p className="mb-2">Nombre de cartes restantes: {hand1.length}</p>
           
-          {hand1.length > 0 && (
-            <div className="flex justify-center mb-2">
-              <Card
-                value={hand1[0][0] as 'A' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | 'T' | 'J' | 'Q' | 'K'}
-                suit={hand1[0][1] as 'S' | 'D' | 'H' | 'C'}
-              />
-            </div>
-          )}
+          <div className="flex justify-center mb-2">
+            {hand1.slice(0, 5).map((card, index) => (
+              <div key={index} className="inline-block mr-2">
+                <Card
+                  value={card[0] as 'A' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | 'T' | 'J' | 'Q' | 'K'}
+                  suit={card[1] as 'S' | 'D' | 'H' | 'C'}
+                />
+              </div>
+            ))}
+          </div>
           
           <button 
             onClick={() => playCard(1)} 
@@ -192,14 +194,16 @@ return (
           <h2 className="text-lg font-semibold mb-2">Joueur 2</h2>
           <p className="mb-2">Nombre de cartes restantes: {hand2.length}</p>
           
-          {hand2.length > 0 && (
-            <div className="flex justify-center mb-2">
-              <Card
-                value={hand2[0][0] as 'A' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | 'T' | 'J' | 'Q' | 'K'}
-                suit={hand2[0][1] as 'S' | 'D' | 'H' | 'C'}
-              />
-            </div>
-          )}
+          <div className="flex justify-center mb-2">
+            {hand2.slice(0, 5).map((card, index) => (
+              <div key={index} className="inline-block mr-2">
+                <Card
+                  value={card[0] as 'A' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | 'T' | 'J' | 'Q' | 'K'}
+                  suit={card[1] as 'S' | 'D' | 'H' | 'C'}
+                />
+              </div>
+            ))}
+          </div>
           
           <button 
             onClick={() => playCard(2)} 
@@ -211,7 +215,7 @@ return (
         </div>
       </div>
     </div>
-);
+  );
 };
 
 export default App;
