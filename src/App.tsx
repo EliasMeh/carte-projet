@@ -23,6 +23,8 @@ function reducer(state: State, action: Action): State {
   }
 }
 
+//Récupéré d'ici https://www.freecodecamp.org/news/how-to-shuffle-an-array-of-items-using-javascript-or-typescript/
+
 const shuffle = (array: string[]) => {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
